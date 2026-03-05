@@ -152,6 +152,34 @@ app.get("/posts/slug/:slug", async (c) => {
   return c.json(post);
 });
 
+// 記事の内容を更新する
+app.patch("/posts/:id", async (c) => {
+  const id = c.req.param("id");
+  const { title, content, slug } = await c.req.json();
+
+  try {
+    const updatedPost = await prisma.post.update({
+      where: {
+        id: Number(id),
+      },
+      data: {
+        title,
+        content,
+        slug,
+      },
+    });
+    return c.json(updatedPost);
+  } catch (error) {
+    console.error(error);
+    return c.json(
+      {
+        error: "更新に失敗しました。IDが正しくないか、スラグが重複しています。",
+      },
+      400,
+    );
+  }
+});
+
 const port = 3000;
 console.log(`Server is running on http://localhost:${port}`);
 
