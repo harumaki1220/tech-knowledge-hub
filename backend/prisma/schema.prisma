@@ -57,7 +57,7 @@ model RoadmapItem {
   order     Int     // ロードマップ内でのステップ番号（1, 2, 3...）
   roadmap   Roadmap @relation(fields: [roadmapId], references: [id])
   roadmapId Int
-  post      Post    @relation(fields: [postId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
   postId    Int
 
   @@unique([roadmapId, order]) // 特定のロードマップ内で順序が重複するのを防止

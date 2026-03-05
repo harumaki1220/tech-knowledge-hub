@@ -190,6 +190,21 @@ app.patch("/posts/:id", async (c) => {
   }
 });
 
+app.delete("/posts/:id", async (c) => {
+  const id = c.req.param("id");
+  try {
+    await prisma.post.delete({
+      where: {
+        id: Number(id),
+      },
+    });
+    return c.json({ message: "削除に成功しました" });
+  } catch (error) {
+    console.error(error);
+    return c.json({ error: "削除に失敗しました" }, 500);
+  }
+});
+
 const port = 3000;
 console.log(`Server is running on http://localhost:${port}`);
 

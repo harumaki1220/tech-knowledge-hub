@@ -3,6 +3,7 @@ import remarkGfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import Link from "next/link";
+import DeleteButton from "./DeleteButton";
 
 export default async function PostDetailPage({
   params,
@@ -19,7 +20,11 @@ export default async function PostDetailPage({
 
   return (
     <main className="p-8 max-w-3xl mx-auto">
-      <h1 className="text-4xl font-extrabold mb-4">{post.title}</h1>
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-4xl font-extrabold text-gray-900">{post.title}</h1>
+        <DeleteButton postId={post.id} />
+      </div>
+
       <div className="text-sm text-gray-500 mb-8 pb-4 border-b">
         Author: {post.author?.name}
       </div>
