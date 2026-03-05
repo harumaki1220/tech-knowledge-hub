@@ -13,8 +13,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// ユーザー（記事の投稿者）
 model User {
   id    Int     @id @default(autoincrement())
   email String  @unique
   name  String?
+  posts Post[]
+}
+
+// 記事本体（Markdown形式のコンテンツを保持）
+model Post {
+  id        Int      @id @default(autoincrement())
+  title     String
+  slug      String   @unique
+  content   String
+  published Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  author    User     @relation(fields: [authorId], references: [id])
+  authorId  Int
+  tags      Tag[]
+  roadmapItems RoadmapItem[]
+}
+
+// 技術タグ（記事の分類用）
+model Tag {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  posts Post[]
+}
+
+// 学習ロードマップ（複数の記事を体系立ててまとめる）
+model Roadmap {
+  id          Int           @id @default(autoincrement())
+  title       String
+  description String?
+  items       RoadmapItem[]
+}
+
+// ロードマップと記事の中間テーブル（記事の掲載順序を管理）
+model RoadmapItem {
+  id        Int     @id @default(autoincrement())
+  order     Int     // ロードマップ内でのステップ番号（1, 2, 3...）
+  roadmap   Roadmap @relation(fields: [roadmapId], references: [id])
+  roadmapId Int
+  post      Post    @relation(fields: [postId], references: [id])
+  postId    Int
+
+  @@unique([roadmapId, order]) // 特定のロードマップ内で順序が重複するのを防止
 }
