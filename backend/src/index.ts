@@ -1,8 +1,18 @@
 import { serve } from "@hono/node-server";
 import { Hono } from "hono";
 import { PrismaClient } from "@prisma/client";
+import { cors } from "hono/cors";
 
 const app = new Hono();
+
+app.use(
+  "/*",
+  cors({
+    origin: "http://localhost:3001",
+    allowMethods: ["GET", "POST", "PATCH", "DELETE", "OPTIONS"],
+  }),
+);
+
 const prisma = new PrismaClient();
 
 // 全ての記事をタグ・著者情報込みで取得する
