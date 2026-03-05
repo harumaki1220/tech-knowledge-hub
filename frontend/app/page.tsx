@@ -11,26 +11,34 @@ export default async function Home() {
       <h1 className="text-3xl font-bold mb-6">技術記事一覧</h1>
 
       <div className="grid gap-6">
-        {posts.map((post: any) => (
-          <div
-            key={post.id}
-            className="border p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow"
-          >
-            <Link href={`/posts/${post.id}`}>
-              <h2 className="text-2xl font-semibold text-blue-600 hover:underline">
-                {post.title}
-              </h2>
-            </Link>
+        {posts.map((post: any) => {
+          const plainTextPreview = post.content
+            .replace(/[#*`\-_>]/g, "")
+            .trim();
 
-            <p className="text-gray-600 mt-2 line-clamp-2">{post.content}</p>
+          return (
+            <div
+              key={post.id}
+              className="border p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow"
+            >
+              <Link href={`/posts/${post.id}`}>
+                <h2 className="text-2xl font-semibold text-blue-600 hover:underline">
+                  {post.title}
+                </h2>
+              </Link>
 
-            <div className="mt-4 flex items-center text-sm text-gray-500">
-              <span className="bg-gray-100 px-2 py-1 rounded">
-                Author: {post.author?.name || "Unknown"}
-              </span>
+              <p className="text-gray-600 mt-2 line-clamp-2">
+                {plainTextPreview}
+              </p>
+
+              <div className="mt-4 flex items-center text-sm text-gray-500">
+                <span className="bg-gray-100 px-2 py-1 rounded">
+                  Author: {post.author?.name || "Unknown"}
+                </span>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </main>
   );
