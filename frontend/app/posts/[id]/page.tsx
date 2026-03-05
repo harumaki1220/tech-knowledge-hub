@@ -22,7 +22,17 @@ export default async function PostDetailPage({
     <main className="p-8 max-w-3xl mx-auto">
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-4xl font-extrabold text-gray-900">{post.title}</h1>
-        <DeleteButton postId={post.id} />
+
+        <div className="flex gap-4">
+          <Link
+            href={`/posts/${post.id}/edit`}
+            className="bg-gray-500 text-white px-4 py-2 rounded font-bold hover:bg-gray-700 transition flex items-center"
+          >
+            編集する
+          </Link>
+
+          <DeleteButton postId={post.id} />
+        </div>
       </div>
 
       <div className="text-sm text-gray-500 mb-8 pb-4 border-b">
